@@ -14,6 +14,9 @@ public:
 
 protected:
     void paintEvent(QPaintEvent *);
+    void mousePressEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *);
 
 signals:
 
@@ -21,6 +24,7 @@ public slots:
 
 private:
     QList<QPoint> points;
+    bool mouseDown;
 
 };
 
