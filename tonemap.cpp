@@ -115,6 +115,22 @@ void ToneMap::mouseMoveEvent(QMouseEvent * event)
     if (grabbedPoint != -1)
     {
         points[grabbedPoint] = fromDisplay(event->pos());
+        if (grabbedPoint == 0)
+            points[grabbedPoint].setX(0);
+        if (grabbedPoint == points.size()-1)
+            points[grabbedPoint].setX(65535);
+
+        if (grabbedPoint > 0 && points[grabbedPoint-1].x() >= points[grabbedPoint].x())
+        {
+            --grabbedPoint;
+            points.removeAt(grabbedPoint);
+        }
+
+        if (grabbedPoint < points.count()-1 && points[grabbedPoint+1].x() <= points[grabbedPoint].x())
+        {
+            points.removeAt(grabbedPoint+1);
+        }
+
         refreshPoints();
         update();
     }
