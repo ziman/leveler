@@ -87,6 +87,17 @@ void ToneMap::mousePressEvent(QMouseEvent * event)
 {
     mouseDown = true;
     grabbedPoint = selectedPoint;
+
+    if (grabbedPoint == -1)
+    {
+        QPoint p = fromDisplay(event->pos());
+        int i = 0;
+        while (points[i].x() < p.x()) ++i;
+        points.insert(i, p);
+        grabbedPoint = i;
+        refreshPoints();
+    }
+
     mouseMoveEvent(event);
     update();
 }
@@ -114,21 +125,27 @@ void ToneMap::mouseMoveEvent(QMouseEvent * event)
 
     if (grabbedPoint != -1)
     {
-        points[grabbedPoint] = fromDisplay(event->pos());
+        QPoint & pt = points[grabbedPoint];
+        pt = fromDisplay(event->pos());
         if (grabbedPoint == 0)
-            points[grabbedPoint].setX(0);
+            pt.setX(0);
         if (grabbedPoint == points.size()-1)
-            points[grabbedPoint].setX(65535);
+            pt.setX(65535);
 
-        if (grabbedPoint > 0 && points[grabbedPoint-1].x() >= points[grabbedPoint].x())
+        if (pt.x() < 0) pt.setX(0);
+        if (pt.x() > 65535) pt.setX(65535);
+        if (pt.y() < 0) pt.setY(0);
+        if (pt.y() > 65535) pt.setY(65535);
+
+        if (grabbedPoint < points.count()-1 && points[grabbedPoint+1].x() <= pt.x())
+        {
+            points.removeAt(grabbedPoint+1);
+        }
+
+        if (grabbedPoint > 0 && points[grabbedPoint-1].x() >= pt.x())
         {
             --grabbedPoint;
             points.removeAt(grabbedPoint);
-        }
-
-        if (grabbedPoint < points.count()-1 && points[grabbedPoint+1].x() <= points[grabbedPoint].x())
-        {
-            points.removeAt(grabbedPoint+1);
         }
 
         refreshPoints();
