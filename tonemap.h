@@ -5,6 +5,8 @@
 #include <QList>
 #include <QPoint>
 
+#include "cubiccurve.h"
+
 class ToneMap : public QWidget
 {
 Q_OBJECT
@@ -23,9 +25,18 @@ signals:
 public slots:
 
 private:
-    QList<QPoint> points;
+    QList<QPoint> points;  ///< mapping points
+    QList<QPoint> dpoints; ///< displayed points
+    CubicCurve curve, dcurve;
     bool mouseDown;
+    int W, H;
+    int selectedPoint;
 
+    static int nearestPoint(const QList<QPoint> & pts, QPoint p, double * bestDist = 0);
+    void refreshPoints();
+
+    QPoint fromDisplay(const QPoint & p);
+    QPoint toDisplay(const QPoint & p);
 };
 
 #endif // TONEMAP_H

@@ -6,7 +6,9 @@ TARGET = leveler
 TEMPLATE = app
 SOURCES += main.cpp \
     mainwindow.cpp \
-    tonemap.cpp
+    tonemap.cpp \
+    cubiccurve.cpp
 HEADERS += mainwindow.h \
-    tonemap.h
+    tonemap.h \
+    cubiccurve.h
 FORMS += mainwindow.ui
