@@ -25,7 +25,7 @@ ToneMap::ToneMap(QWidget *parent) :
     selectedPoint = grabbedPoint = -1;
 
     points.append(QPoint(0,0));
-    points.append(QPoint(65535, 65535));
+    points.append(QPoint(65535, 255));
     refreshPoints();
 
     setMouseTracking(true);
@@ -33,12 +33,12 @@ ToneMap::ToneMap(QWidget *parent) :
 
 QPoint ToneMap::fromDisplay(const QPoint & p)
 {
-    return QPoint((p.x() * 65536) / W, ((H-1-p.y()) * 65536) / H);
+    return QPoint((p.x() * 65535) / W, ((H-1-p.y()) * 255) / H);
 }
 
 QPoint ToneMap::toDisplay(const QPoint &p)
 {
-    return QPoint((p.x() * W) / 65536, H-1 - (p.y() * H) / 65536);
+    return QPoint((p.x() * W) / 65535, H-1 - (p.y() * H) / 255);
 }
 
 void ToneMap::refreshPoints()
@@ -133,7 +133,7 @@ void ToneMap::mouseMoveEvent(QMouseEvent * event)
         if (pt.x() < 0) pt.setX(0);
         if (pt.x() > 65535) pt.setX(65535);
         if (pt.y() < 0) pt.setY(0);
-        if (pt.y() > 65535) pt.setY(65535);
+        if (pt.y() > 255) pt.setY(255);
 
         if (grabbedPoint < points.count()-1 && points[grabbedPoint+1].x() <= pt.x())
         {
