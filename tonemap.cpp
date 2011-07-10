@@ -25,8 +25,6 @@ ToneMap::ToneMap(QWidget *parent) :
     selectedPoint = grabbedPoint = -1;
 
     points.append(QPoint(0,0));
-    points.append(QPoint(16384,32768));
-    points.append(QPoint(32768, 16384));
     points.append(QPoint(65535, 65535));
     refreshPoints();
 
