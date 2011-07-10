@@ -8,8 +8,8 @@
 #include <QColor>
 #include <cmath>
 
-static const double GRAB_DIST = 6; // pixels
 static const int DOT_RADIUS = 3;
+static const double GRAB_DIST = 10; // pixels
 
 inline static double sqr(double x)
 {
@@ -22,7 +22,7 @@ ToneMap::ToneMap(QWidget *parent) :
     mouseDown = false;
     W = width();
     H = height();
-    selectedPoint = -1;
+    selectedPoint = grabbedPoint = -1;
 
     points.append(QPoint(0,0));
     points.append(QPoint(16384,32768));
@@ -76,9 +76,17 @@ int ToneMap::value(int x)
    return x;
 }
 
+void ToneMap::resizeEvent(QResizeEvent * event)
+{
+    W = event->size().width();
+    H = event->size().height();
+    refreshPoints();
+}
+
 void ToneMap::mousePressEvent(QMouseEvent * event)
 {
     mouseDown = true;
+    grabbedPoint = selectedPoint;
     mouseMoveEvent(event);
     update();
 }
@@ -86,6 +94,7 @@ void ToneMap::mousePressEvent(QMouseEvent * event)
 void ToneMap::mouseReleaseEvent(QMouseEvent * event)
 {
     mouseDown = false;
+    grabbedPoint = -1;
     update();
 }
 
@@ -102,6 +111,13 @@ void ToneMap::mouseMoveEvent(QMouseEvent * event)
         selectedPoint = pt;
         update();
     }
+
+    if (grabbedPoint != -1)
+    {
+        points[grabbedPoint] = fromDisplay(event->pos());
+        refreshPoints();
+        update();
+    }
 }
 
 void ToneMap::paintEvent(QPaintEvent * event)
@@ -111,6 +127,9 @@ void ToneMap::paintEvent(QPaintEvent * event)
 
     W = p.viewport().width();
     H = p.viewport().height();
+
+    // draw the frame
+    p.drawRect(p.viewport());
 
     QBrush brush(mouseDown ? Qt::red : Qt::black);
     for (int i = 0; i < dpoints.count(); ++i)

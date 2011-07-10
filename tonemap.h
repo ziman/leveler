@@ -15,10 +15,11 @@ public:
     int value(int x);
 
 protected:
-    void paintEvent(QPaintEvent *);
-    void mousePressEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
-    void mouseMoveEvent(QMouseEvent *);
+    virtual void paintEvent(QPaintEvent *);
+    virtual void mousePressEvent(QMouseEvent *);
+    virtual void mouseReleaseEvent(QMouseEvent *);
+    virtual void mouseMoveEvent(QMouseEvent *);
+    virtual void resizeEvent (QResizeEvent * event);
 
 signals:
 
@@ -30,7 +31,7 @@ private:
     CubicCurve curve, dcurve;
     bool mouseDown;
     int W, H;
-    int selectedPoint;
+    int selectedPoint, grabbedPoint;
 
     static int nearestPoint(const QList<QPoint> & pts, QPoint p, double * bestDist = 0);
     void refreshPoints();
