@@ -8,7 +8,8 @@
 #include <QColor>
 #include <cmath>
 
-static const double GRAB_DIST = 10; // pixels
+static const double GRAB_DIST = 6; // pixels
+static const int DOT_RADIUS = 3;
 
 inline static double sqr(double x)
 {
@@ -79,11 +80,13 @@ void ToneMap::mousePressEvent(QMouseEvent * event)
 {
     mouseDown = true;
     mouseMoveEvent(event);
+    update();
 }
 
 void ToneMap::mouseReleaseEvent(QMouseEvent * event)
 {
     mouseDown = false;
+    update();
 }
 
 void ToneMap::mouseMoveEvent(QMouseEvent * event)
@@ -97,11 +100,8 @@ void ToneMap::mouseMoveEvent(QMouseEvent * event)
     if (pt != selectedPoint)
     {
         selectedPoint = pt;
-        repaint();
+        update();
     }
-
-    qDebug() << "Move at " << event->pos() << endl;
-    qDebug() << " nearest: " << pt << ", with dist = " << dist << endl;
 }
 
 void ToneMap::paintEvent(QPaintEvent * event)
@@ -109,20 +109,15 @@ void ToneMap::paintEvent(QPaintEvent * event)
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing, true);
 
-    if (points.isEmpty())
-        return;
-
     W = p.viewport().width();
     H = p.viewport().height();
 
-    p.setBrush(QBrush(Qt::black));
+    QBrush brush(mouseDown ? Qt::red : Qt::black);
     for (int i = 0; i < dpoints.count(); ++i)
     {
-        if (selectedPoint == i)
-            p.setBrush(Qt::SolidPattern);
-        else
-            p.setBrush(Qt::NoBrush);
-        p.drawEllipse(dpoints[i], 3, 3);
+        brush.setStyle(selectedPoint == i ? Qt::SolidPattern : Qt::NoBrush);
+        p.setBrush(brush);
+        p.drawEllipse(dpoints[i], DOT_RADIUS, DOT_RADIUS);
     }
 
     p.drawPolyline(dcurve.getPolyline());
