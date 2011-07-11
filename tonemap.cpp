@@ -71,7 +71,7 @@ int ToneMap::nearestPoint(const QList<QPoint> & pts, QPoint p, double * dist)
 
 int ToneMap::value(int x)
 {
-   return x;
+   return lround(curve.value(x));
 }
 
 void ToneMap::resizeEvent(QResizeEvent * event)
@@ -110,30 +110,33 @@ void ToneMap::mouseReleaseEvent(QMouseEvent * event)
 void ToneMap::mouseMoveEvent(QMouseEvent * event)
 {
     double dist;
-    int pt = nearestPoint(dpoints, event->pos(), &dist);
+    int npt = nearestPoint(dpoints, event->pos(), &dist);
+    QPoint pos = fromDisplay(event->pos());
+    if (grabbedPoint == 0)
+        pos.setX(0);
+    if (grabbedPoint == points.size()-1)
+        pos.setX(65535);
+
+    if (pos.x() < 0) pos.setX(0);
+    if (pos.x() > 65535) pos.setX(65535);
+    if (pos.y() < 0) pos.setY(0);
+    if (pos.y() > 255) pos.setY(255);
+
+    qDebug() << "mouse at point " << pos << ", with value " << value(pos.x()) << endl;
 
     if (dist >= GRAB_DIST)
-        pt = -1;
+        npt = -1;
 
-    if (pt != selectedPoint)
+    if (npt != selectedPoint)
     {
-        selectedPoint = pt;
+        selectedPoint = npt;
         update();
     }
 
     if (grabbedPoint != -1)
     {
         QPoint & pt = points[grabbedPoint];
-        pt = fromDisplay(event->pos());
-        if (grabbedPoint == 0)
-            pt.setX(0);
-        if (grabbedPoint == points.size()-1)
-            pt.setX(65535);
-
-        if (pt.x() < 0) pt.setX(0);
-        if (pt.x() > 65535) pt.setX(65535);
-        if (pt.y() < 0) pt.setY(0);
-        if (pt.y() > 255) pt.setY(255);
+        pt = pos;
 
         if (grabbedPoint < points.count()-1 && points[grabbedPoint+1].x() <= pt.x())
         {

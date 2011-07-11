@@ -1,6 +1,40 @@
 #include "cubiccurve.h"
 #include <cmath>
 
+double CubicCurve::value(double x)
+{
+    if (x < ctrl[0].x())
+        return 0;
+
+    int i = 1;
+    while (i < ctrl.count() && ctrl[i].x() < x)
+        ++i;
+
+    if (i >= ctrl.count())
+        return 255;
+
+    const Segment & seg = X[i-1];
+    double ulo = 0;
+    double uhi = 1;
+    double u = 0.5;
+    double epsilon = 1.0e-6;
+    double xepsilon = 0.5;
+    while (ulo + epsilon < uhi)
+    {
+        u = (ulo+uhi) / 2;
+        double ux = seg.eval(u);
+        if (abs(ux-x) < xepsilon)
+            break;
+
+        if (x < ux)
+            uhi = u;
+        else
+            ulo = u;
+    }
+
+    return Y[i-1].eval(u);
+}
+
 CubicCurve::Segment::Segment(double a, double b, double c, double d)
 {
     this->a = a; this->b = b;
@@ -16,7 +50,7 @@ CubicCurve::Segment::Segment(const CubicCurve::Segment & x)
     : a(x.a), b(x.b), c(x.c), d(x.d)
 {}
 
-double CubicCurve::Segment::eval(double u) {
+double CubicCurve::Segment::eval(double u) const {
     return (((d*u) + c)*u + b)*u + a;
 }
 
@@ -52,6 +86,7 @@ QList<CubicCurve::Segment> CubicCurve::calcNaturalCubic(int n, const double * x)
 
 void CubicCurve::setControlPoints(const QList<QPoint> & ctrl)
 {
+    this->ctrl = ctrl;
     if (ctrl.count() >= 2) {
         int n = ctrl.count();
         double * xpoints = new double[n];
