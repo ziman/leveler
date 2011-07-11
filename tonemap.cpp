@@ -162,10 +162,11 @@ void ToneMap::paintEvent(QPaintEvent * event)
     // draw the frame
     p.drawRect(p.viewport());
 
-    QBrush brush(mouseDown ? Qt::red : Qt::black);
+    QBrush brush;
     for (int i = 0; i < dpoints.count(); ++i)
     {
-        brush.setStyle(selectedPoint == i ? Qt::SolidPattern : Qt::NoBrush);
+        brush.setColor(grabbedPoint == i ? Qt::red : Qt::black);
+        brush.setStyle((selectedPoint == i || grabbedPoint == i) ? Qt::SolidPattern : Qt::NoBrush);
         p.setBrush(brush);
         p.drawEllipse(dpoints[i], DOT_RADIUS, DOT_RADIUS);
     }
