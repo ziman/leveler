@@ -55,6 +55,7 @@ double CubicCurve::Segment::eval(double u) const {
 }
 
 QList<CubicCurve::Segment> CubicCurve::calcNaturalCubic(int n, const double * x) {
+    // adapted from http://www.cse.unsw.edu.au/~lambert/splines/source.html
     --n;
     double * gamma = new double[n+1];
     double * delta = new double[n+1];
