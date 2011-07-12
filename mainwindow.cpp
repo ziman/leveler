@@ -1,11 +1,17 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+void MainWindow::tonemapChanged()
+{
+
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    connect(ui->toneMap, SIGNAL(changed()), SLOT(tonemapChanged()));
 }
 
 MainWindow::~MainWindow()

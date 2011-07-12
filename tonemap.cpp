@@ -56,6 +56,7 @@ void ToneMap::refreshPoints()
     curve.setControlPoints(points);
     dcurve.setControlPoints(dpoints);
     clearCache();
+    emit changed();
 }
 
 int ToneMap::nearestPoint(const QList<QPoint> & pts, QPoint p, double * dist)
@@ -132,7 +133,7 @@ void ToneMap::mouseMoveEvent(QMouseEvent * event)
     if (pos.y() < 0) pos.setY(0);
     if (pos.y() > 255) pos.setY(255);
 
-    qDebug() << "mouse at point " << pos << ", with value " << value(pos.x()) << endl;
+    // qDebug() << "mouse at point " << pos << ", with value " << value(pos.x()) << endl;
 
     if (dist >= GRAB_DIST)
         npt = -1;

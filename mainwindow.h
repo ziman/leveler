@@ -16,6 +16,9 @@ public:
 protected:
     void changeEvent(QEvent *e);
 
+public slots:
+    void tonemapChanged();
+
 private:
     Ui::MainWindow *ui;
 };

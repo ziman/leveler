@@ -22,6 +22,7 @@ protected:
     virtual void resizeEvent (QResizeEvent * event);
 
 signals:
+    void changed();
 
 public slots:
 
