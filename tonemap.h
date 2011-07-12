@@ -32,9 +32,11 @@ private:
     bool mouseDown;
     int W, H;
     int selectedPoint, grabbedPoint;
+    int cache[65536];
 
     static int nearestPoint(const QList<QPoint> & pts, QPoint p, double * bestDist = 0);
     void refreshPoints();
+    void clearCache();
 
     QPoint fromDisplay(const QPoint & p);
     QPoint toDisplay(const QPoint & p);

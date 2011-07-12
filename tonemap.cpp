@@ -16,6 +16,12 @@ inline static double sqr(double x)
     return x*x;
 }
 
+void ToneMap::clearCache()
+{
+    for (int i = 0; i < 65536; ++i)
+        cache[i] = -1;
+}
+
 ToneMap::ToneMap(QWidget *parent) :
     QWidget(parent)
 {
@@ -49,6 +55,7 @@ void ToneMap::refreshPoints()
 
     curve.setControlPoints(points);
     dcurve.setControlPoints(dpoints);
+    clearCache();
 }
 
 int ToneMap::nearestPoint(const QList<QPoint> & pts, QPoint p, double * dist)
@@ -71,7 +78,10 @@ int ToneMap::nearestPoint(const QList<QPoint> & pts, QPoint p, double * dist)
 
 int ToneMap::value(int x)
 {
-   return lround(curve.value(x));
+    if (cache[x] == -1)
+        return cache[x] = lround(curve.value(x));
+    else
+        return cache[x];
 }
 
 void ToneMap::resizeEvent(QResizeEvent * event)
