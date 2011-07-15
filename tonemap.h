@@ -25,6 +25,7 @@ signals:
     void changed();
 
 public slots:
+    void reset();
 
 private:
     QList<QPoint> points;  ///< mapping points

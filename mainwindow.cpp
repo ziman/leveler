@@ -1,6 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+void MainWindow::openClicked()
+{
+    qDebug("open!");
+}
+
 void MainWindow::tonemapChanged()
 {
 

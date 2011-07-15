@@ -16,6 +16,16 @@ inline static double sqr(double x)
     return x*x;
 }
 
+void ToneMap::reset()
+{
+    selectedPoint = grabbedPoint = -1;
+    mouseDown = false;
+    points.clear();
+    points.append(QPoint(0,0));
+    points.append(QPoint(65535, 255));
+    refreshPoints();
+}
+
 void ToneMap::clearCache()
 {
     for (int i = 0; i < 65536; ++i)
@@ -25,16 +35,10 @@ void ToneMap::clearCache()
 ToneMap::ToneMap(QWidget *parent) :
     QWidget(parent)
 {
-    mouseDown = false;
     W = width();
     H = height();
-    selectedPoint = grabbedPoint = -1;
-
-    points.append(QPoint(0,0));
-    points.append(QPoint(65535, 255));
-    refreshPoints();
-
     setMouseTracking(true);
+    reset();
 }
 
 QPoint ToneMap::fromDisplay(const QPoint & p)

@@ -18,6 +18,7 @@ protected:
 
 public slots:
     void tonemapChanged();
+    void openClicked();
 
 private:
     Ui::MainWindow *ui;
