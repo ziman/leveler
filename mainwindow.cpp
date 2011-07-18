@@ -1,9 +1,22 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "cvtiff.h"
+
+#include <QFileDialog>
+
+using namespace std;
+using namespace cv;
+
 void MainWindow::openClicked()
 {
-    qDebug("open!");
+    QString fname = QFileDialog::getOpenFileName(this, "Open a 16-bit TIFF file", ".", "TIFF files (*.tif *.tiff);;All files (*.*)");
+    if (fname.isNull())
+        return;
+
+    Mat img = cvtiffLoad16(fname.toStdString());
+    namedWindow("preview", CV_WINDOW_NORMAL);
+    imshow("preview", img);
 }
 
 void MainWindow::tonemapChanged()

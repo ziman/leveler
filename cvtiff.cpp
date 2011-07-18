@@ -9,32 +9,44 @@ using namespace cv;
 
 typedef unsigned short ushort;
 
+static Mat fail(const std::string & msg)
+{
+    cerr << "Could not load TIFF: " << msg << endl;
+    return Mat(0, 0, CV_16UC3);
+}
+
 Mat cvtiffLoad16(const std::string & fname)
 {
     // open the file
     TIFF * tiff = TIFFOpen(fname.c_str(), "r");
     if (!tiff)
-        return Mat(0, 0, CV_16U);
+        return fail("could not open " + fname);
 
     // get the dimensions
-    unsigned width, height;
+    int width, height;
     TIFFGetField(tiff, TIFFTAG_IMAGEWIDTH, &width);
     TIFFGetField(tiff, TIFFTAG_IMAGELENGTH, &height);
 
     // allocate the memory
-    ushort * raster = (ushort *) _TIFFmalloc(width * height * 4 * sizeof(ushort));
-    if (!raster)
-        return Mat(0, 0, CV_16U);
+    int lineSize = TIFFScanlineSize(tiff);
+    ushort * line = (ushort *) _TIFFmalloc(lineSize);
+    if (!line)
+        return fail("could not allocate scanline");
 
-    int ret = TIFFReadRGBAImage(tiff, width, height, (uint32 *) raster, 0);
-    if (!ret)
-        return Mat(0, 0, CV_16U);
+    // cout << "scanline size: " << lineSize << ", width: " << width << ", bytes per pixel: " << lineSize/width << endl;
+
+    // read the image
+    Mat result(height, width, CV_16UC3);
+    for (int y = 0; y < height; ++y)
+    {
+        TIFFReadScanline(tiff, line, y);
+        memcpy(result.ptr<ushort>(y), line, lineSize);
+    }
 
     // close the file
     TIFFClose(tiff);
-
-    // return the matrix (the allocated memory will be managed by the struct returned)
-    return Mat(height, width, CV_16U, raster, width * 4 * sizeof(ushort));
+    _TIFFfree(line);
+    return result;
 }
 
 void cvtiffSave16(const std::string & fname, const Mat & img)
