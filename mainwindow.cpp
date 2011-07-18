@@ -17,6 +17,7 @@ void MainWindow::openClicked()
     Mat img = cvtiffLoad16(fname.toStdString());
     namedWindow("preview", CV_WINDOW_NORMAL);
     imshow("preview", img);
+    cvtiffSave16("saved.tiff", img);
 }
 
 void MainWindow::tonemapChanged()
