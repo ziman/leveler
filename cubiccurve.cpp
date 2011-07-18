@@ -115,7 +115,7 @@ void CubicCurve::setControlPoints(const QList<QPoint> & ctrl)
 
 CubicCurve::CubicCurve()
 {
-    steps = 5;
+    steps = 10;
 }
 
 CubicCurve::CubicCurve(int steps)

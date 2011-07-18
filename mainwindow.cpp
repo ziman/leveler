@@ -21,7 +21,7 @@ void MainWindow::openClicked()
 void MainWindow::tonemapChanged()
 {
     ldr = ui->toneMap->tonemap(hdr);
-    QImage img = QImage(ldr.data, ldr.cols, ldr.rows, QImage::Format_RGB888);
+    QImage img = QImage(ldr.data, ldr.cols, ldr.rows, 3*ldr.cols, QImage::Format_RGB888);
     ui->picture->setPixmap(QPixmap::fromImage(img));
 }
 
