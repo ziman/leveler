@@ -22,6 +22,7 @@ protected:
 public slots:
     void tonemapChanged();
     void openClicked();
+    void saveAsClicked();
 
 private:
     Ui::MainWindow *ui;

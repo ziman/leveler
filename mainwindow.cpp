@@ -8,9 +8,23 @@
 using namespace std;
 using namespace cv;
 
+void MainWindow::saveAsClicked()
+{
+    QString fname = QFileDialog::getSaveFileName(this, "Save a 8-bit image", ".",
+        "JPEG files (*.jpg);;PNG files (*.png);;All files (*.*)"
+    );
+    if (fname.isNull())
+        return;
+
+    QImage img(ldr.data, ldr.cols, ldr.rows, 3*ldr.cols, QImage::Format_RGB888);
+    img.save(fname);
+}
+
 void MainWindow::openClicked()
 {
-    QString fname = QFileDialog::getOpenFileName(this, "Open a 16-bit TIFF file", ".", "TIFF files (*.tif *.tiff);;All files (*.*)");
+    QString fname = QFileDialog::getOpenFileName(this, "Open a 16-bit TIFF file", ".",
+        "TIFF files (*.tif *.tiff);;All files (*.*)"
+    );
     if (fname.isNull())
         return;
 
@@ -21,7 +35,7 @@ void MainWindow::openClicked()
 void MainWindow::tonemapChanged()
 {
     ldr = ui->toneMap->tonemap(hdr);
-    QImage img = QImage(ldr.data, ldr.cols, ldr.rows, 3*ldr.cols, QImage::Format_RGB888);
+    QImage img(ldr.data, ldr.cols, ldr.rows, 3*ldr.cols, QImage::Format_RGB888);
     ui->picture->setPixmap(QPixmap::fromImage(img));
 }
 

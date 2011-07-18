@@ -78,6 +78,7 @@
      <string>File</string>
     </property>
     <addaction name="actionOpen"/>
+    <addaction name="actionSave_LDR_as"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -130,7 +131,7 @@
      <normaloff>../../../../usr/share/icons/default.kde4/16x16/actions/document-open-data.png</normaloff>../../../../usr/share/icons/default.kde4/16x16/actions/document-open-data.png</iconset>
    </property>
    <property name="text">
-    <string>Open</string>
+    <string>Open 16-bit TIFF...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
@@ -139,6 +140,11 @@
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionSave_LDR_as">
+   <property name="text">
+    <string>Save 8-bit as...</string>
    </property>
   </action>
  </widget>
@@ -188,9 +194,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionSave_LDR_as</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>saveAsClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>391</x>
+     <y>338</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>tonemapChanged()</slot>
   <slot>openClicked()</slot>
+  <slot>saveAsClicked()</slot>
  </slots>
 </ui>
