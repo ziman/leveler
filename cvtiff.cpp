@@ -40,7 +40,19 @@ Mat cvtiffLoad16(const std::string & fname)
     for (int y = 0; y < height; ++y)
     {
         TIFFReadScanline(tiff, line, y);
-        memcpy(result.ptr<ushort>(y), line, lineSize);
+        ushort * src = line;
+        ushort * row = result.ptr<ushort>(y);
+
+        // convert RGB -> BGR
+        for (int x = 0; x < width; ++x)
+        {
+            row[0] = src[2];
+            row[1] = src[1];
+            row[2] = src[0];
+
+            row += 3;
+            src += 3;
+        }
     }
 
     // close the file
