@@ -9,7 +9,7 @@
 
 #include "cubiccurve.h"
 
-#define CLAMP(x) (x < 0 ? 0 : (x > 65535 ? 65535 : x))
+#define CLAMP(x) (x < 0 ? 0 : (x > 255 ? 255 : x))
 class ToneMap : public QWidget
 {
 Q_OBJECT
