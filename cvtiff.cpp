@@ -96,7 +96,7 @@ void cvtiffSave16(const std::string & fname, const Mat & img)
         return;
     }
 
-    //cout << "scanline size: " << lineSize << ", width: " << img.cols << ", bytes per pixel: " << lineSize/img.cols << endl;
+    // cout << "scanline size: " << lineSize << ", width: " << img.cols << ", bytes per pixel: " << lineSize/img.cols << endl;
 
     // write the image
     for (int y = 0; y < img.rows; ++y)
@@ -104,7 +104,7 @@ void cvtiffSave16(const std::string & fname, const Mat & img)
         ushort * dst = line;
         const ushort * row = img.ptr<ushort>(y);
 
-        // convert RGB -> BGR
+        // convert BGR -> RGB
         for (int x = 0; x < img.cols; ++x)
         {
             dst[0] = row[2];
