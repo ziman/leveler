@@ -8,12 +8,32 @@
 #include <QColor>
 #include <cmath>
 
+using namespace std;
+using namespace cv;
+
 static const int DOT_RADIUS = 3;
 static const double GRAB_DIST = 10; // pixels
 
 inline static double sqr(double x)
 {
     return x*x;
+}
+
+Mat ToneMap::tonemap(const Mat & hdr)
+{
+    Mat result(hdr.rows, hdr.cols, CV_8UC3);
+
+    for (int y = 0; y < hdr.rows; ++y)
+    {
+        const unsigned short * src = hdr.ptr<unsigned short>(y);
+        unsigned char * dst = result.ptr<unsigned char>(y);
+        for (int x = 0; x < 3*hdr.cols; ++x)
+        {
+            *dst++ = value(*src++);
+        }
+    }
+
+    return result;
 }
 
 void ToneMap::reset()
@@ -81,14 +101,6 @@ int ToneMap::nearestPoint(const QList<QPoint> & pts, QPoint p, double * dist)
     return best;
 }
 
-int ToneMap::value(int x)
-{
-    if (cache[x] == -1)
-        return cache[x] = lround(curve.value(x));
-    else
-        return cache[x];
-}
-
 void ToneMap::resizeEvent(QResizeEvent * event)
 {
     W = event->size().width();
@@ -115,7 +127,7 @@ void ToneMap::mousePressEvent(QMouseEvent * event)
     update();
 }
 
-void ToneMap::mouseReleaseEvent(QMouseEvent * event)
+void ToneMap::mouseReleaseEvent(QMouseEvent *)
 {
     mouseDown = false;
     grabbedPoint = -1;
@@ -169,7 +181,7 @@ void ToneMap::mouseMoveEvent(QMouseEvent * event)
     }
 }
 
-void ToneMap::paintEvent(QPaintEvent * event)
+void ToneMap::paintEvent(QPaintEvent *)
 {
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing, true);

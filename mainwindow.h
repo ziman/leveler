@@ -1,7 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <opencv.hpp>
+
 #include <QMainWindow>
+#include "tonemap.h"
 
 namespace Ui {
     class MainWindow;
@@ -22,6 +25,7 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
+    cv::Mat hdr, ldr;
 };
 
 #endif // MAINWINDOW_H

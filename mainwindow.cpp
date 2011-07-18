@@ -14,15 +14,15 @@ void MainWindow::openClicked()
     if (fname.isNull())
         return;
 
-    Mat img = cvtiffLoad16(fname.toStdString());
-    namedWindow("preview", CV_WINDOW_NORMAL);
-    imshow("preview", img);
-    cvtiffSave16("saved.tiff", img);
+    hdr = cvtiffLoad16(fname.toStdString());
+    tonemapChanged();
 }
 
 void MainWindow::tonemapChanged()
 {
-
+    ldr = ui->toneMap->tonemap(hdr);
+    QImage img = QImage(ldr.data, ldr.cols, ldr.rows, QImage::Format_RGB888);
+    ui->picture->setPixmap(QPixmap::fromImage(img));
 }
 
 MainWindow::MainWindow(QWidget *parent) :

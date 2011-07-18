@@ -27,37 +27,13 @@ Mat cvtiffLoad16(const std::string & fname)
     TIFFGetField(tiff, TIFFTAG_IMAGEWIDTH, &width);
     TIFFGetField(tiff, TIFFTAG_IMAGELENGTH, &height);
 
-    // allocate the memory
-    int lineSize = TIFFScanlineSize(tiff);
-    ushort * line = (ushort *) _TIFFmalloc(lineSize);
-    if (!line)
-        return fail("could not allocate scanline");
-
-    // cout << "scanline size: " << lineSize << ", width: " << width << ", bytes per pixel: " << lineSize/width << endl;
-
     // read the image
     Mat result(height, width, CV_16UC3);
     for (int y = 0; y < height; ++y)
-    {
-        TIFFReadScanline(tiff, line, y);
-        ushort * src = line;
-        ushort * row = result.ptr<ushort>(y);
-
-        // convert RGB -> BGR
-        for (int x = 0; x < width; ++x)
-        {
-            row[0] = src[2];
-            row[1] = src[1];
-            row[2] = src[0];
-
-            row += 3;
-            src += 3;
-        }
-    }
+        TIFFReadScanline(tiff, result.ptr<ushort>(y), y);
 
     // close the file
     TIFFClose(tiff);
-    _TIFFfree(line);
     return result;
 }
 
@@ -86,38 +62,10 @@ void cvtiffSave16(const std::string & fname, const Mat & img)
     TIFFSetField(tiff, TIFFTAG_YRESOLUTION, 72.0);
     TIFFSetField(tiff, TIFFTAG_RESOLUTIONUNIT, RESUNIT_INCH);
 
-    // allocate the memory
-    int lineSize = TIFFScanlineSize(tiff);
-    ushort * line = (ushort *) _TIFFmalloc(lineSize);
-    if (!line)
-    {
-        fail("could not allocate scanline");
-        TIFFClose(tiff);
-        return;
-    }
-
-    // cout << "scanline size: " << lineSize << ", width: " << img.cols << ", bytes per pixel: " << lineSize/img.cols << endl;
-
     // write the image
     for (int y = 0; y < img.rows; ++y)
-    {
-        ushort * dst = line;
-        const ushort * row = img.ptr<ushort>(y);
-
-        // convert BGR -> RGB
-        for (int x = 0; x < img.cols; ++x)
-        {
-            dst[0] = row[2];
-            dst[1] = row[1];
-            dst[2] = row[0];
-
-            row += 3;
-            dst += 3;
-        }
-        TIFFWriteScanline(tiff, line, y);
-    }
+        TIFFWriteScanline(tiff, (void *) img.ptr<ushort>(y), y);
 
     // close the file
     TIFFClose(tiff);
-    _TIFFfree(line);
 }

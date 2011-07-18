@@ -1,18 +1,30 @@
 #ifndef TONEMAP_H
 #define TONEMAP_H
 
+#include <opencv.hpp>
+
 #include <QWidget>
 #include <QList>
 #include <QPoint>
 
 #include "cubiccurve.h"
 
+#define CLAMP(x) (x < 0 ? 0 : (x > 65535 ? 65535 : x))
 class ToneMap : public QWidget
 {
 Q_OBJECT
 public:
     explicit ToneMap(QWidget *parent = 0);
-    int value(int x);
+
+    inline int value(int x)
+    {
+        if (cache[x] == -1)
+            return cache[x] = lround(CLAMP(curve.value(x)));
+        else
+            return cache[x];
+    }
+
+    cv::Mat tonemap(const cv::Mat & hdr);
 
 protected:
     virtual void paintEvent(QPaintEvent *);
