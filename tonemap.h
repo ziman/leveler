@@ -7,7 +7,7 @@
 #include <QList>
 #include <QPoint>
 
-#include "cubiccurve.h"
+#include "linearcurve.h"
 
 #define CLAMP(x) (x < 0 ? 0 : (x > 255 ? 255 : x))
 class ToneMap : public QWidget
@@ -42,7 +42,7 @@ public slots:
 private:
     QList<QPoint> points;  ///< mapping points
     QList<QPoint> dpoints; ///< displayed points
-    CubicCurve curve, dcurve;
+    LinearCurve curve, dcurve;
     bool mouseDown;
     int W, H;
     int selectedPoint, grabbedPoint;
