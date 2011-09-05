@@ -9,12 +9,14 @@ SOURCES += main.cpp \
     tonemap.cpp \
     cubiccurve.cpp \
     cvtiff.cpp \
-    quadcurve.cpp
+    quadcurve.cpp \
+    linearcurve.cpp
 HEADERS += mainwindow.h \
     tonemap.h \
     cubiccurve.h \
     cvtiff.h \
-    quadcurve.h
+    quadcurve.h \
+    linearcurve.h
 FORMS += mainwindow.ui
 INCLUDEPATH += /usr/local/include/opencv2
 LIBS += -L/usr/local/lib \
