@@ -47,10 +47,10 @@ void MainWindow::cropChanged()
     if (hdr.empty())
         return;
 
-    int l = ui->scaleHLo->value() * hdr.cols / 100;
-    int r = ui->scaleHHi->value() * hdr.cols / 100;
-    int t = ui->scaleVLo->value() * hdr.rows / 100;
-    int b = ui->scaleVHi->value() * hdr.rows / 100;
+    int l = ui->scaleHLo->value() * hdr.cols / 256;
+    int r = ui->scaleHHi->value() * hdr.cols / 256;
+    int t = ui->scaleVLo->value() * hdr.rows / 256;
+    int b = ui->scaleVHi->value() * hdr.rows / 256;
 
     if (t >= b)
     {
