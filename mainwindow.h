@@ -20,13 +20,14 @@ protected:
     void changeEvent(QEvent *e);
 
 public slots:
+    void cropChanged();
     void tonemapChanged();
     void openClicked();
     void saveAsClicked();
 
 private:
     Ui::MainWindow *ui;
-    cv::Mat hdr, ldr;
+    cv::Mat hdr, hdr_pp, ldr;
 };
 
 #endif // MAINWINDOW_H

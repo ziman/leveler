@@ -34,8 +34,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>583</width>
-         <height>426</height>
+         <width>613</width>
+         <height>564</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -294,6 +294,12 @@
         </property>
         <item row="0" column="0">
          <widget class="QSlider" name="scaleHLo">
+          <property name="minimum">
+           <number>0</number>
+          </property>
+          <property name="maximum">
+           <number>99</number>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -317,6 +323,12 @@
         </item>
         <item row="1" column="0">
          <widget class="QSlider" name="scaleHHi">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
           <property name="value">
            <number>99</number>
           </property>
@@ -333,25 +345,43 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="lineWidth">
+           <number>0</number>
+          </property>
           <property name="text">
            <string/>
           </property>
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="QSlider" name="scaleVLo">
+         <widget class="QSlider" name="scaleVHi">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
           <property name="value">
-           <number>99</number>
+           <number>100</number>
           </property>
           <property name="orientation">
            <enum>Qt::Vertical</enum>
+          </property>
+          <property name="invertedAppearance">
+           <bool>true</bool>
+          </property>
+          <property name="invertedControls">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
         <item row="2" column="2">
-         <widget class="QSlider" name="scaleVHi">
+         <widget class="QSlider" name="scaleVLo">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
+          </property>
+          <property name="invertedAppearance">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -446,10 +476,75 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>scaleHLo</sender>
+   <signal>sliderReleased()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>cropChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>734</x>
+     <y>355</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>533</x>
+     <y>469</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>scaleHHi</sender>
+   <signal>sliderReleased()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>cropChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>734</x>
+     <y>375</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>544</x>
+     <y>474</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>scaleVHi</sender>
+   <signal>sliderReleased()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>cropChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>751</x>
+     <y>586</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>430</x>
+     <y>475</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>scaleVLo</sender>
+   <signal>sliderReleased()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>cropChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>766</x>
+     <y>400</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>742</x>
+     <y>472</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>tonemapChanged()</slot>
   <slot>openClicked()</slot>
   <slot>saveAsClicked()</slot>
+  <slot>cropChanged()</slot>
  </slots>
 </ui>
