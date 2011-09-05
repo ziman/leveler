@@ -558,11 +558,60 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>cbRed</sender>
+   <signal>sliderReleased()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>wbChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>643</x>
+     <y>109</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>606</x>
+     <y>26</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbGreen</sender>
+   <signal>sliderReleased()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>wbChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>667</x>
+     <y>77</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>514</x>
+     <y>26</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbBlue</sender>
+   <signal>sliderReleased()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>wbChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>694</x>
+     <y>109</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>413</x>
+     <y>25</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>tonemapChanged()</slot>
   <slot>openClicked()</slot>
   <slot>saveAsClicked()</slot>
   <slot>cropChanged()</slot>
+  <slot>wbChanged()</slot>
  </slots>
 </ui>

@@ -34,12 +34,19 @@ void MainWindow::openClicked()
 
 void MainWindow::tonemapChanged()
 {
-    if (hdr_pp.empty())
+    if (hdr_wb.empty())
         return;
 
-    ldr = ui->toneMap->tonemap(hdr_pp);
+    ldr = ui->toneMap->tonemap(hdr_wb);
     QImage img(ldr.data, ldr.cols, ldr.rows, 3*ldr.cols, QImage::Format_RGB888);
     ui->picture->setPixmap(QPixmap::fromImage(img));
+}
+
+void MainWindow::wbChanged()
+{
+    hdr_wb = hdr_cropped;
+
+    tonemapChanged();
 }
 
 void MainWindow::cropChanged()
@@ -68,9 +75,9 @@ void MainWindow::cropChanged()
             r = l + 1;
     }
 
-    hdr_pp = Mat(hdr, cvRect(l, t, r-l, b-t));
+    hdr_cropped = Mat(hdr, cvRect(l, t, r-l, b-t));
 
-    tonemapChanged();
+    wbChanged();
 }
 
 MainWindow::MainWindow(QWidget *parent) :

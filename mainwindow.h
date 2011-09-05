@@ -21,13 +21,14 @@ protected:
 
 public slots:
     void cropChanged();
+    void wbChanged();
     void tonemapChanged();
     void openClicked();
     void saveAsClicked();
 
 private:
     Ui::MainWindow *ui;
-    cv::Mat hdr, hdr_pp, ldr;
+    cv::Mat hdr, hdr_cropped, hdr_wb, ldr;
 };
 
 #endif // MAINWINDOW_H
