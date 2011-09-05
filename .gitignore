@@ -1,3 +1,6 @@
 leveler
 ui_*
 moc_*
+*.tiff
+*.pro.user
+*.jpg
