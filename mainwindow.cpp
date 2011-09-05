@@ -34,6 +34,9 @@ void MainWindow::openClicked()
 
 void MainWindow::tonemapChanged()
 {
+    if (hdr_pp.empty())
+        return;
+
     ldr = ui->toneMap->tonemap(hdr_pp);
     QImage img(ldr.data, ldr.cols, ldr.rows, 3*ldr.cols, QImage::Format_RGB888);
     ui->picture->setPixmap(QPixmap::fromImage(img));
@@ -41,6 +44,9 @@ void MainWindow::tonemapChanged()
 
 void MainWindow::cropChanged()
 {
+    if (hdr.empty())
+        return;
+
     int l = ui->scaleHLo->value() * hdr.cols / 100;
     int r = ui->scaleHHi->value() * hdr.cols / 100;
     int t = ui->scaleVLo->value() * hdr.rows / 100;
