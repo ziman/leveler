@@ -50,14 +50,14 @@ private:
     int W, H;
     int selectedPoint, grabbedPoint;
     int cache[65536];
-    int hist[3][HIST_BINS];
-    int histMax[3];
+    float hist[3][HIST_BINS];
+    float histMax[3];
 
     static int nearestPoint(const QList<QPoint> & pts, QPoint p, double * bestDist = 0);
     void refreshPoints();
     void clearCache();
 
-    void paintHistogram(int * bins, int hmax, QColor color, QPainter & p);
+    void paintHistogram(float * bins, float hmax, QColor color, QPainter & p);
 
     QPoint fromDisplay(const QPoint & p);
     QPoint toDisplay(const QPoint & p);

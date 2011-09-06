@@ -21,15 +21,16 @@ inline static double sqr(double x)
 
 void ToneMap::setHistogram(int chan, int * bins)
 {
-    int &hmax = histMax[chan];
+    float &hmax = histMax[chan];
     hmax = 0;
-    int * histChan = hist[chan];
+    float * histChan = hist[chan];
     for (int i = 0; i < HIST_BINS; ++i)
     {
-        if (*bins > hmax)
-            hmax = *bins;
-
-        *histChan++ = *bins++;
+        float cnt = *bins++;
+        float val = (cnt == 0) ? 0 : logf(cnt);
+        if (val > hmax)
+            hmax = val;
+        *histChan++ = val;
     }
 
     update();
@@ -201,10 +202,11 @@ void ToneMap::mouseMoveEvent(QMouseEvent * event)
     }
 }
 
-void ToneMap::paintHistogram(int * bins, int hmax, QColor color, QPainter & p)
+void ToneMap::paintHistogram(float * bins, float hmax, QColor color, QPainter & p)
 {
     int W = p.viewport().width();
     int H = p.viewport().height();
+    int HH = H - 1;
 
     // draw the histogram
     QPolygon histPoly;
@@ -212,7 +214,7 @@ void ToneMap::paintHistogram(int * bins, int hmax, QColor color, QPainter & p)
     {
         int xl = xr;
         xr = W * (i + 1) / HIST_BINS;
-        int y = H - (bins[i] * H) / hmax;
+        int y = HH - lround((bins[i] * HH) / hmax);
         histPoly.append(QPoint(xl, y));
         histPoly.append(QPoint(xr, y));
     }
@@ -221,14 +223,8 @@ void ToneMap::paintHistogram(int * bins, int hmax, QColor color, QPainter & p)
     histPoly.append(QPoint(0,H));
 
     p.setPen(color);
-    p.setBrush(color);
-
     p.drawPolygon(histPoly);
     p.setPen(Qt::black);
-
-    QBrush clear;
-    clear.setStyle(Qt::NoBrush);
-    p.setBrush(clear);
 }
 
 void ToneMap::paintEvent(QPaintEvent *)
