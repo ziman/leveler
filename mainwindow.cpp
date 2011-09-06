@@ -44,7 +44,24 @@ void MainWindow::tonemapChanged()
 
 void MainWindow::wbChanged()
 {
-    hdr_wb = hdr_cropped;
+    QSlider * sliders[] = {ui->cbRed, ui->cbGreen, ui->cbBlue};
+    Mat chans[3];
+    split(hdr_cropped, chans);
+
+    for (int i = 0; i < 3; ++i)
+    {
+        double c = ((double) sliders[i]->value()) / sliders[i]->maximum(); // result is in 0.0 .. 1.0
+        c = 2*c; // normalize to 0.0 .. 2.0
+
+        chans[i] *= c;
+    }
+
+    if (ui->cbGrayscale->checkState() == Qt::Checked)
+    {
+        chans[0] = chans[1] = chans[2] = 0.333 * chans[0] + 0.333 * chans[1] + 0.333 * chans[2];
+    }
+
+    merge(chans, 3, hdr_wb);
 
     tonemapChanged();
 }
