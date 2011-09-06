@@ -35,7 +35,7 @@
          <x>0</x>
          <y>0</y>
          <width>589</width>
-         <height>431</height>
+         <height>564</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -565,7 +565,7 @@
   </connection>
   <connection>
    <sender>cbRed</sender>
-   <signal>sliderReleased()</signal>
+   <signal>valueChanged(int)</signal>
    <receiver>MainWindow</receiver>
    <slot>wbChanged()</slot>
    <hints>
@@ -581,7 +581,7 @@
   </connection>
   <connection>
    <sender>cbGreen</sender>
-   <signal>sliderReleased()</signal>
+   <signal>valueChanged(int)</signal>
    <receiver>MainWindow</receiver>
    <slot>wbChanged()</slot>
    <hints>
@@ -597,7 +597,7 @@
   </connection>
   <connection>
    <sender>cbBlue</sender>
-   <signal>sliderReleased()</signal>
+   <signal>valueChanged(int)</signal>
    <receiver>MainWindow</receiver>
    <slot>wbChanged()</slot>
    <hints>
