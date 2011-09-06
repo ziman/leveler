@@ -26,21 +26,12 @@ LinearCurve::LinearCurve(int steps, const QList<QPoint> &ctrl)
 
 double LinearCurve::value(double x)
 {
-    int lo = 1, hi = ctrl.count() - 1;
-    int mid = (lo + hi) / 2;
+    int mid = 1;
+    while (ctrl.at(mid).x() < x && mid < ctrl.count()-1)
+        ++mid;
 
-    while (mid > 1 && lo < hi-1)
-    {
-        if (x <= ctrl.at(mid-1).x())
-            hi = mid - 1;
-        else if (x > ctrl.at(mid).x())
-            lo = mid + 1;
-        else
-            break;
-    }
-
-    const QPoint &p1 = ctrl.at(mid-1);
-    const QPoint &p2 = ctrl.at(mid);
+    const QPoint &p1 = ctrl.at(mid);
+    const QPoint &p2 = ctrl.at(mid-1);
 
     return p1.y() + (lround(x) - p1.x()) * (p2.y() - p1.y()) / (p2.x() - p1.x());
 }
