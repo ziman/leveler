@@ -4,6 +4,7 @@
 #include "cvtiff.h"
 
 #include <QFileDialog>
+#include <stdint.h>
 
 using namespace std;
 using namespace cv;
@@ -42,6 +43,22 @@ void MainWindow::tonemapChanged()
     ui->picture->setPixmap(QPixmap::fromImage(img));
 }
 
+static void calcHistogram(const Mat & chan, int * hist)
+{
+    for (int i = 0; i < HIST_BINS; ++i)
+        hist[i] = 0;
+
+    for (int y = 0; y < chan.rows; ++y)
+    {
+        const uint16_t * row = chan.ptr<uint16_t>(y);
+        const uint16_t * end = row + chan.cols;
+        while (row < end) {
+            ++hist[((int) *row) * HIST_BINS / 65536];
+            ++row;
+        }
+    }
+}
+
 void MainWindow::wbChanged()
 {
     QSlider * sliders[] = {ui->cbRed, ui->cbGreen, ui->cbBlue};
@@ -59,6 +76,13 @@ void MainWindow::wbChanged()
     if (ui->cbGrayscale->checkState() == Qt::Checked)
     {
         chans[0] = chans[1] = chans[2] = 0.333 * chans[0] + 0.333 * chans[1] + 0.333 * chans[2];
+    }
+
+    int hist[3][HIST_BINS];
+    for (int i = 0; i < 3; ++i)
+    {
+        calcHistogram(chans[i], hist[i]);
+        ui->toneMap->setHistogram(i, hist[i]);
     }
 
     merge(chans, 3, hdr_wb);

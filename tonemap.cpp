@@ -19,6 +19,22 @@ inline static double sqr(double x)
     return x*x;
 }
 
+void ToneMap::setHistogram(int chan, int * bins)
+{
+    int &hmax = histMax[chan];
+    hmax = 0;
+    int * histChan = hist[chan];
+    for (int i = 0; i < HIST_BINS; ++i)
+    {
+        if (*bins > hmax)
+            hmax = *bins;
+
+        *histChan++ = *bins++;
+    }
+
+    update();
+}
+
 Mat ToneMap::tonemap(const Mat & hdr)
 {
     Mat result(hdr.rows, hdr.cols, CV_8UC3);
@@ -43,6 +59,10 @@ void ToneMap::reset()
     points.clear();
     points.append(QPoint(0,0));
     points.append(QPoint(65535, 255));
+    for (int c = 0; c < 3; ++c)
+        for (int i = 0; i < HIST_BINS; ++i)
+            hist[c][i] = 0;
+    histMax[0] = histMax[1] = histMax[2] = 1;
     refreshPoints();
 }
 
@@ -181,6 +201,36 @@ void ToneMap::mouseMoveEvent(QMouseEvent * event)
     }
 }
 
+void ToneMap::paintHistogram(int * bins, int hmax, QColor color, QPainter & p)
+{
+    int W = p.viewport().width();
+    int H = p.viewport().height();
+
+    // draw the histogram
+    QPolygon histPoly;
+    for (int i = 0, xr = 0; i < HIST_BINS; ++i)
+    {
+        int xl = xr;
+        xr = W * (i + 1) / HIST_BINS;
+        int y = H - (bins[i] * H) / hmax;
+        histPoly.append(QPoint(xl, y));
+        histPoly.append(QPoint(xr, y));
+    }
+
+    histPoly.append(QPoint(W,H));
+    histPoly.append(QPoint(0,H));
+
+    p.setPen(color);
+    p.setBrush(color);
+
+    p.drawPolygon(histPoly);
+    p.setPen(Qt::black);
+
+    QBrush clear;
+    clear.setStyle(Qt::NoBrush);
+    p.setBrush(clear);
+}
+
 void ToneMap::paintEvent(QPaintEvent *)
 {
     QPainter p(this);
@@ -188,6 +238,11 @@ void ToneMap::paintEvent(QPaintEvent *)
 
     W = p.viewport().width();
     H = p.viewport().height();
+
+    // draw the histograms
+    paintHistogram(hist[0], histMax[0], Qt::red,   p);
+    paintHistogram(hist[1], histMax[1], Qt::green, p);
+    paintHistogram(hist[2], histMax[2], Qt::blue,  p);
 
     // draw the frame
     p.drawRect(p.viewport());
