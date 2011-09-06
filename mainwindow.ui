@@ -34,8 +34,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>589</width>
-         <height>564</height>
+         <width>615</width>
+         <height>484</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -87,7 +87,7 @@
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget_2">
    <property name="sizePolicy">
-    <sizepolicy hsizetype="Preferred" vsizetype="Ignored">
+    <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
@@ -95,7 +95,7 @@
    <property name="minimumSize">
     <size>
      <width>70</width>
-     <height>58</height>
+     <height>138</height>
     </size>
    </property>
    <property name="windowTitle">
@@ -117,7 +117,7 @@
        <property name="minimumSize">
         <size>
          <width>20</width>
-         <height>20</height>
+         <height>100</height>
         </size>
        </property>
       </widget>
@@ -255,43 +255,6 @@
            <widget class="QCheckBox" name="cbGrayscale">
             <property name="text">
              <string>Grayscale</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="groupBox_3">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="title">
-          <string>Scale</string>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
-          <item>
-           <widget class="QSlider" name="verticalSlider">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="minimum">
-             <number>1</number>
-            </property>
-            <property name="maximum">
-             <number>200</number>
-            </property>
-            <property name="sliderPosition">
-             <number>100</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="tickPosition">
-             <enum>QSlider::TicksBelow</enum>
-            </property>
-            <property name="tickInterval">
-             <number>20</number>
             </property>
            </widget>
           </item>

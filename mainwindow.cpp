@@ -69,6 +69,7 @@ void MainWindow::wbChanged()
     {
         double c = ((double) sliders[i]->value()) / sliders[i]->maximum(); // result is in 0.0 .. 1.0
         c = 2*c; // normalize to 0.0 .. 2.0
+        c = c*c; // quadratic
 
         chans[i] *= c;
     }
